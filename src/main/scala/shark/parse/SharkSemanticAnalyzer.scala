@@ -99,7 +99,7 @@ class SharkSemanticAnalyzer(conf: HiveConf) extends SemanticAnalyzer(conf) with 
       // Delegate create view and analyze to Hive.
       super.analyzeInternal(ast)
       return
-    } else if (astTokenType == HiveParser.TOK_CREATETABLE) {
+    } else if (astTokenType == HiveParser.TOK_CREATETABLE || astTokenType == 604) {
       init()
       // Use Hive to do a first analysis pass.
       super.analyzeInternal(ast)
