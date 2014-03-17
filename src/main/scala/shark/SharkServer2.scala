@@ -5,6 +5,7 @@ import org.apache.hadoop.hive.common.LogUtils
 import org.apache.hadoop.hive.common.LogUtils.LogInitializationException
 import org.apache.hadoop.hive.conf.HiveConf
 import org.apache.hive.service.cli.thrift.ThriftCLIService
+import org.apache.hive.service.cli.thrift.ThriftBinaryCLIService
 import org.apache.hive.service.server.{HiveServer2, ServerOptionsProcessor}
 import org.apache.spark.SparkEnv
 import shark.server.SharkCLIService
@@ -59,7 +60,7 @@ class SharkServer2 extends HiveServer2 {
       val sharkCLIService = new SharkCLIService
       Utils.setSuperField("cliService", sharkCLIService, this)
       addService(sharkCLIService)
-      val sthriftCLIService = new ThriftCLIService(sharkCLIService)
+      val sthriftCLIService = new ThriftBinaryCLIService(sharkCLIService)
       Utils.setSuperField("thriftCLIService", sthriftCLIService, this)
       addService(sthriftCLIService)
       sharkInit(hiveConf)

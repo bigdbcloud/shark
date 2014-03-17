@@ -142,7 +142,7 @@ class SparkTask extends HiveTask[SparkWork] with Serializable with LogHelper {
 
   override def getName = "MAPRED-SPARK"
 
-  override def localizeMRTmpFilesImpl(ctx: Context) = Unit
+  // override def localizeMRTmpFilesImpl(ctx: Context) = Unit
 
 }
 

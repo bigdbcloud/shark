@@ -7,7 +7,7 @@ import org.apache.hive.service.cli.session.HiveSession
 object SharkExecuteStatementOperation {
   def newExecuteStatementOperation(parentSession: HiveSession,
                                    statement: String,
-                                   confOverlay: JMap[String, String])
+                                   confOverlay: JMap[String, String], runAsync: Boolean)
                                    : Any = {
     val tokens = statement.trim().split("\\s+")
     val command = tokens{0}.toLowerCase

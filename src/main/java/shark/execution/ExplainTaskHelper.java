@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.Comparator;
 
-import org.apache.hadoop.hive.ql.exec.ExplainTask.MethodComparator;
 import org.apache.hadoop.hive.ql.plan.Explain;
 
 /**
@@ -88,6 +88,18 @@ public class ExplainTaskHelper {
     }
     
     outputWork(work, out, extended, indent);
+  }
+
+  /**
+   * MethodComparator.
+   *
+   */
+  public static class MethodComparator implements Comparator {
+    public int compare(Object o1, Object o2) {
+      Method m1 = (Method) o1;
+      Method m2 = (Method) o2;
+      return m1.getName().compareTo(m2.getName());
+    }
   }
     
   public static void outputWork(Serializable work, PrintStream out, boolean extended,

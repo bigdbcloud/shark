@@ -43,9 +43,9 @@ abstract class CommonJoinOperator[T <: JoinDesc] extends NaryOperator[T] with Jo
   @transient
   var tagLen: Int = _
   @transient
-  var joinVals: Array[JavaList[ExprNodeEvaluator]] = _
+  var joinVals: Array[JavaList[ExprNodeEvaluator[_ <: org.apache.hadoop.hive.ql.plan.ExprNodeDesc]]] = _
   @transient
-  var joinFilters: Array[JavaList[ExprNodeEvaluator]] = _
+  var joinFilters: Array[JavaList[ExprNodeEvaluator[_ <: org.apache.hadoop.hive.ql.plan.ExprNodeDesc]]] = _
   @transient
   var joinValuesObjectInspectors: Array[JavaList[ObjectInspector]] = _
   @transient
@@ -77,11 +77,11 @@ abstract class CommonJoinOperator[T <: JoinDesc] extends NaryOperator[T] with Jo
 
     tagLen = conf.getTagLength()
 
-    joinVals = new Array[JavaList[ExprNodeEvaluator]](tagLen)
+    joinVals = new Array[JavaList[ExprNodeEvaluator[_ <: org.apache.hadoop.hive.ql.plan.ExprNodeDesc]]](tagLen)
     HiveJoinUtil.populateJoinKeyValue(
       joinVals, conf.getExprs(), order, CommonJoinOperator.NOTSKIPBIGTABLE)
 
-    joinFilters = new Array[JavaList[ExprNodeEvaluator]](tagLen)
+    joinFilters = new Array[JavaList[ExprNodeEvaluator[_ <: org.apache.hadoop.hive.ql.plan.ExprNodeDesc]]](tagLen)
     HiveJoinUtil.populateJoinKeyValue(
       joinFilters, conf.getFilters(), order, CommonJoinOperator.NOTSKIPBIGTABLE)
 

@@ -232,6 +232,6 @@ private[shark] class SharkDDLTask extends HiveTask[SharkDDLWork]
 
   override def getName = "DDL-SPARK"
 
-  override def localizeMRTmpFilesImpl(ctx: Context) = Unit
+  // override def localizeMRTmpFilesImpl(ctx: Context) = Unit
 
 }

@@ -20,6 +20,7 @@ package shark.execution
 import scala.collection.JavaConversions
 import scala.reflect.ClassTag
 
+import com.google.common.collect.{ImmutableList => GImmutableList}
 import com.google.common.collect.{Ordering => GOrdering}
 
 import org.apache.spark.{HashPartitioner, Partitioner, RangePartitioner}
@@ -128,7 +129,7 @@ object RDDUtils {
     // Guava only takes Java iterators. Convert the iterator into Java iterator and then
     // convert it back to Scala.
     JavaConversions.asScalaIterator(
-      ordering.leastOf(JavaConversions.asJavaIterator(it), k).iterator)
+      ordering.leastOf(GImmutableList.copyOf(JavaConversions.asJavaIterator(it)), k).iterator)
   }
 
 }

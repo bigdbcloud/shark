@@ -28,6 +28,11 @@ import org.apache.hadoop.hive.ql.exec.{PTFOperator => HivePTFOperator}
 import org.apache.hadoop.hive.ql.plan.{PTFDeserializer, PTFDesc}
 import org.apache.hadoop.hive.ql.plan.PTFDesc._
 import org.apache.hadoop.hive.ql.udf.ptf.TableFunctionEvaluator
+import org.apache.hadoop.hive.ql.plan.ptf.PTFInputDef
+import org.apache.hadoop.hive.ql.plan.ptf.WindowTableFunctionDef
+import org.apache.hadoop.hive.ql.plan.ptf.PTFExpressionDef
+import org.apache.hadoop.hive.ql.plan.ptf.PartitionDef
+import org.apache.hadoop.hive.ql.plan.ptf.PartitionedTableFunctionDef
 import org.apache.hadoop.hive.serde2.objectinspector.{ObjectInspectorUtils, ObjectInspector,
   StructObjectInspector}
 import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspectorUtils.ObjectInspectorCopyOption
@@ -124,7 +129,7 @@ class PartitionTableFunctionOperator extends UnaryOperator[PTFDesc] {
 
   def executeWindowExprs(oPart: PTFPartition): PTFPartition = {
     val wTFnDef: WindowTableFunctionDef = conf.getFuncDef.asInstanceOf[WindowTableFunctionDef]
-    val inputOI = wTFnDef.getOutputFromWdwFnProcessing().getOI
+    val inputOI = wTFnDef.getInput().getOutputShape().getOI
     val outputOI = wTFnDef.getOutputShape().getOI
     val numCols = outputOI.getAllStructFieldRefs().size
     val wdwExprs = wTFnDef.getWindowExpressions
@@ -165,9 +170,9 @@ class PartitionTableFunctionOperator extends UnaryOperator[PTFDesc] {
 
   def setupKeysWrapper(inputOI: ObjectInspector) {
     val pDef: PartitionDef = conf.getStartOfChain().getPartition
-    val exprs: ArrayList[PTFExpressionDef] = pDef.getExpressions
+    val exprs: java.util.List[PTFExpressionDef] = pDef.getExpressions
     val numExprs = exprs.size
-    val keyFields = new Array[ExprNodeEvaluator](numExprs)
+    val keyFields = new Array[ExprNodeEvaluator[_ <: org.apache.hadoop.hive.ql.plan.ExprNodeDesc]](numExprs)
     val keyOIs = new Array[ObjectInspector](numExprs)
     val currentKeyOIs = new Array[ObjectInspector](numExprs)
 
@@ -258,7 +263,7 @@ class PartitionTableFunctionOperator extends UnaryOperator[PTFDesc] {
         var partition: PTFPartition = null
         val row = iter.next().asInstanceOf[Any]
         if (!conf.isMapSide) {
-          newKeys.getNewKey(row, inputPart.getOI)
+          newKeys.getNewKey(row, inputPart.getInputOI)
           val keysAreEqual = if (currentKeys != null && newKeys != null) {
             newKeys.equals(currentKeys)
           } else {

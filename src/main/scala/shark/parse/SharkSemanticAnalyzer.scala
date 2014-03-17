@@ -474,6 +474,7 @@ class SharkSemanticAnalyzer(conf: HiveConf) extends SemanticAnalyzer(conf) with 
       // Continue planning based on the 'cacheMode' read.
       val shouldCache = CacheType.shouldCache(cacheMode)
       if (shouldCache) {
+        logDebug("New CREATE table is cached table of %s".format(cacheMode))
         if (cacheMode == CacheType.MEMORY_ONLY || cacheMode == CacheType.TACHYON) {
           val serDeName = createTableDesc.getSerName
           if (serDeName == null || serDeName == classOf[LazySimpleSerDe].getName) {

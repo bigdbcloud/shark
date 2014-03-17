@@ -40,7 +40,7 @@ class SharkExplainWork(
   astStringTree: String,
   inputs: JHashSet[ReadEntity],
   extended: Boolean)
- extends ExplainWork(resFile, rootTasks, astStringTree, inputs, extended, false, false)
+ extends ExplainWork(resFile, null, rootTasks, astStringTree, inputs, extended, false, false, false)
 
 
 /**
@@ -105,11 +105,11 @@ class SharkExplainTask extends Task[SharkExplainWork] with java.io.Serializable 
 
   override def getName = hiveExplainTask.getName
 
-  override def localizeMRTmpFilesImpl(ctx: Context) {
-    // explain task has nothing to localize
-    // we don't expect to enter this code path at all
-    throw new RuntimeException ("Unexpected call")
-  }
+  // override def localizeMRTmpFilesImpl(ctx: Context) {
+  //   // explain task has nothing to localize
+  //   // we don't expect to enter this code path at all
+  //   throw new RuntimeException ("Unexpected call")
+  // }
 
 }
 

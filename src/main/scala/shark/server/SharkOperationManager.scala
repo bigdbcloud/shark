@@ -7,10 +7,10 @@ import org.apache.hive.service.cli.session.HiveSession
 class SharkOperationManager extends OperationManager {
  override def newExecuteStatementOperation(parentSession: HiveSession,
                                            statement: String, confOverlay:
-                                           JMap[String, String])
+                                           JMap[String, String], runAsync: Boolean)
                                            : ExecuteStatementOperation = {
    val executeStatementOperation = SharkExecuteStatementOperation
-     .newExecuteStatementOperation(parentSession, statement, confOverlay)
+     .newExecuteStatementOperation(parentSession, statement, confOverlay, false)
    val castOp = executeStatementOperation.asInstanceOf[ExecuteStatementOperation]
    addOperation(castOp)
    castOp
